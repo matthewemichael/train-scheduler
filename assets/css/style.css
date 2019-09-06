@@ -1,0 +1,15 @@
+#train-table th,
+td {
+    display: inline-block;
+    width: 16.575%;
+    text-align: center;
+}
+
+.jumbotron {
+    background-color: #d2d2d2; 
+    color: white
+}
+
+h1 {
+    font-weight: bolder;
+}
