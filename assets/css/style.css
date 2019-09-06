@@ -1,7 +1,5 @@
 #train-table th,
 td {
-    display: inline-block;
-    width: 16.575%;
     text-align: center;
 }
 
@@ -12,4 +10,10 @@ td {
 
 h1 {
     font-weight: bolder;
+}
+
+thead {
+    background: #f1f1f1;
+    /* align-content: center;
+    text-align: center; */
 }
