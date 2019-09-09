@@ -17,3 +17,8 @@ thead {
     /* align-content: center;
     text-align: center; */
 }
+
+.error {
+    color: red;
+    margin-left: 5px;
+  }

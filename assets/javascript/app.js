@@ -23,7 +23,22 @@ $("#add-train-btn").on("click", function(event) {
     var trainDestination = $("#destination-input").val().trim();
     var trainStart = moment($("#start-input").val().trim(), "HH:mm").format("HH:mm");
     var trainFrequency = $("#frequency-input").val().trim();
-
+    
+    $(".error").remove();
+ 
+    if (trainName === "") {
+      $('#train-name-input').after('<span class="error">This field is required</span>');
+    }
+    if (trainDestination === "") {
+      $('#destination-input').after('<span class="error">This field is required</span>');
+    }
+    if (trainStart === "Invalid date") {
+      $('#start-input').after('<span class="error">This field is required</span>');
+    }
+    if (trainFrequency === "") {
+      $('#frequency-input').after('<span class="error">This field is required</span>');
+    }
+    else {
     // Creates local "temporary" object for holding train data
     var newTrain = {
       trainName: trainName,
@@ -37,11 +52,10 @@ $("#add-train-btn").on("click", function(event) {
     database.ref().push(newTrain);
   
     // Logs everything to console
-    console.log(newTrain.name);
-    console.log(newTrain.destination);
-    console.log(newTrain.start);
-    console.log(newTrain.frequency);
-    console.log(newTrain.nextArrival);
+    console.log(newTrain.trainName);
+    console.log(newTrain.trainDestination);
+    console.log(newTrain.trainStart);
+    console.log(newTrain.trainFrequency);
   
    ////////////////////////////////////
   //         NO MORE ALERTS!        //
@@ -53,11 +67,10 @@ $("#add-train-btn").on("click", function(event) {
     $("#destination-input").val("");
     $("#start-input").val("");
     $("#frequency-input").val("");
-});
+}});
 
 // Create Firebase event for adding train to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function(childSnapshot) {
-    console.log(childSnapshot.val());
   
     // Create local variables to store data from firebase
     var trainName = childSnapshot.val().trainName;
@@ -65,7 +78,7 @@ database.ref().on("child_added", function(childSnapshot) {
     var trainStart = childSnapshot.val().trainStart;
     var trainFrequency = childSnapshot.val().trainFrequency;
 
-    var trainStartConverted = moment(trainStart, "HH:mm").subtract(1, "years");
+    var trainStartConverted = moment(trainStart, "hh:mm a").subtract(1, "years");
 
     // Difference between times
     var timeDiff = moment().diff(moment(trainStartConverted), "minutes");
@@ -77,7 +90,7 @@ database.ref().on("child_added", function(childSnapshot) {
     var trainMinAway = trainFrequency - timeRemainder;
 
     // Next Train
-    var nextTrain = moment().add(trainMinAway, "minutes").format("HH:mm");
+    var nextTrain = moment().add(trainMinAway, "minutes").format("hh:mm a");
 
     //Conditional to see if train has run yet
     if (timeRemainder < 0) {
