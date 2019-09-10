@@ -44,7 +44,7 @@ $("#add-train-btn").on("click", function(event) {
     trainDestination == "" ||
     trainStart == "Invalid date" ||
     trainFrequency == "") {
-      $('button').after('<span class="error">Must Complete Entire Form</span>')
+      $('button').after('<span class="error">You Must Complete The Entire Form</span>')
     }
     else {
     // Creates local "temporary" object for holding train data
@@ -65,11 +65,12 @@ $("#add-train-btn").on("click", function(event) {
     console.log(newTrain.trainStart);
     console.log(newTrain.trainFrequency);
   
-   ////////////////////////////////////
-  //         NO MORE ALERTS!        //
- ////////////////////////////////////
     $(".error").remove();
-    alert("train successfully added");
+
+    // Modal (no alert!) to notify user new train added
+    var message = trainName + ' has been successfully added!';
+    $('#alertModal').find('.modal-body p').text(message);
+    $('#alertModal').modal('show')
     
     // Clears all of the text-boxes
     $("#train-name-input").val("");
