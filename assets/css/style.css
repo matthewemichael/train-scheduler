@@ -21,4 +21,18 @@ thead {
 .error {
     color: red;
     margin-left: 5px;
-  }
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+img:hover { 
+    border: 2px solid red; 
+    border-radius: 2px;
+}   
+
+img.removeButton {
+    max-width: 20px;
+    max-height: 20px;
+}

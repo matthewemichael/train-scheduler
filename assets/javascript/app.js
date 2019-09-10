@@ -14,29 +14,37 @@ firebase.initializeApp(firebaseConfig);
 // Create a variable to reference the database
 var database = firebase.database();
 
+var index = 0;
+
+// Function to Remove Train
+function removeRow () {
+  $(".row-" + $(this).attr("data-index")).remove();
+  database.ref().child($(this).attr("data-key")).remove();
+};
+
+// Only allow numeric input for this form field
+$("#frequency-input").on("keypress keyup blur",function (event) {    
+  $(this).val($(this).val().replace(/[^\d].+/, ""));
+   if ((event.which < 48 || event.which > 57)) {
+       event.preventDefault();
+   }
+});
+
 // Button for adding trains
 $("#add-train-btn").on("click", function(event) {
     event.preventDefault();
-  
+    $(".error").remove();
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var trainDestination = $("#destination-input").val().trim();
     var trainStart = moment($("#start-input").val().trim(), "HH:mm").format("HH:mm");
     var trainFrequency = $("#frequency-input").val().trim();
     
-    $(".error").remove();
- 
-    if (trainName === "") {
-      $('#train-name-input').after('<span class="error">This field is required</span>');
-    }
-    if (trainDestination === "") {
-      $('#destination-input').after('<span class="error">This field is required</span>');
-    }
-    if (trainStart === "Invalid date") {
-      $('#start-input').after('<span class="error">This field is required</span>');
-    }
-    if (trainFrequency === "") {
-      $('#frequency-input').after('<span class="error">This field is required</span>');
+    if (trainName == "" ||
+    trainDestination == "" ||
+    trainStart == "Invalid date" ||
+    trainFrequency == "") {
+      $('button').after('<span class="error">Must Complete Entire Form</span>')
     }
     else {
     // Creates local "temporary" object for holding train data
@@ -60,8 +68,9 @@ $("#add-train-btn").on("click", function(event) {
    ////////////////////////////////////
   //         NO MORE ALERTS!        //
  ////////////////////////////////////
+    $(".error").remove();
     alert("train successfully added");
-  
+    
     // Clears all of the text-boxes
     $("#train-name-input").val("");
     $("#destination-input").val("");
@@ -72,44 +81,54 @@ $("#add-train-btn").on("click", function(event) {
 // Create Firebase event for adding train to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function(childSnapshot) {
   
-    // Create local variables to store data from firebase
-    var trainName = childSnapshot.val().trainName;
-    var trainDestination = childSnapshot.val().trainDestination;
-    var trainStart = childSnapshot.val().trainStart;
-    var trainFrequency = childSnapshot.val().trainFrequency;
+  // Create remove button for train, assign index and key data
+  var removeButton = $("<img>").addClass("removeButton").attr("src", 'assets/images/trash-bin.jpg').attr("data-index", index).attr("data-key", childSnapshot.key);
 
-    var trainStartConverted = moment(trainStart, "hh:mm a").subtract(1, "years");
+  // Create local variables to store data from firebase
+  var trainName = childSnapshot.val().trainName;
+  var trainDestination = childSnapshot.val().trainDestination;
+  var trainStart = childSnapshot.val().trainStart;
+  var trainFrequency = childSnapshot.val().trainFrequency;
 
-    // Difference between times
-    var timeDiff = moment().diff(moment(trainStartConverted), "minutes");
+  var trainStartConverted = moment(trainStart, "HH:mm").subtract(1, "years");
 
-    // Time Apart (Remainder)
-    var timeRemainder = timeDiff % trainFrequency;
+  // Difference between times
+  var timeDiff = moment().diff(moment(trainStartConverted), "minutes");
 
-    // Minutes Until Train
-    var trainMinAway = trainFrequency - timeRemainder;
+  // Time Apart (Remainder)
+  var timeRemainder = timeDiff % trainFrequency;
 
-    // Next Train
-    var nextTrain = moment().add(trainMinAway, "minutes").format("hh:mm a");
+  // Minutes Until Train
+  var trainMinAway = trainFrequency - timeRemainder;
 
-    //Conditional to see if train has run yet
-    if (timeRemainder < 0) {
-        nextTrain = trainStart;
-        console.log(nextTrain);
+  // Next Train
+  var nextTrain = moment().add(trainMinAway, "minutes").format("hh:mm A");
 
-        minToTrain = -timeDiff;
-        console.log(minToTrain);
-    }
+  //Conditional to see if train has run yet
+  if (timeRemainder < 0) {
+    nextTrain = trainStart;
+    console.log(nextTrain);
 
-    // Create the new row
-    var newRow = $("<tr>").append(
-      $("<td>").text(trainName),
-      $("<td>").text(trainDestination),
-      $("<td>").text(trainFrequency),
-      $("<td>").text(nextTrain),
-      $("<td>").text(trainMinAway),
-    );
+    minToTrain = -timeDiff;
+    console.log(minToTrain);
+  }
+
+  // Create the new row
+  var newRow = $("<tr>")
+  newRow.addClass("row-" + index);
+  newRow.append(
+    $("<td class='trainname'>").text(trainName),
+    $("<td>").text(trainDestination),
+    $("<td>").text(trainFrequency),
+    $("<td>").text(nextTrain),
+    $("<td>").text(trainMinAway),
+    $("<td>").html(removeButton)
+  );
   
-    // Append the new row to the table
-    $("#train-table > tbody").append(newRow);
+  // Append the new row to the table
+  $("#train-table > tbody").append(newRow);
+
+  index++;
 });
+
+$(document).on("click", ".removeButton", removeRow);
