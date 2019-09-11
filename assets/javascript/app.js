@@ -1,4 +1,4 @@
-// Your web app's Firebase configuration
+// Firebase configuration
 var firebaseConfig = {
     apiKey: "AIzaSyAZSBPjscSAImrvWt8CWS44RDvJMAh72Z0",
     authDomain: "train-activity-9cfbe.firebaseapp.com",
@@ -69,6 +69,7 @@ $("#add-train-btn").on("click", function(event) {
 
     // Modal (no alert!) to notify user new train added
     var message = trainName + ' has been successfully added!';
+    $('#alertModal').find('.modal-title').text("New Train Added!")
     $('#alertModal').find('.modal-body p').text(message);
     $('#alertModal').modal('show')
     
@@ -118,7 +119,7 @@ database.ref().on("child_added", function(childSnapshot) {
   var newRow = $("<tr>")
   newRow.addClass("row-" + index);
   newRow.append(
-    $("<td class='trainname'>").text(trainName),
+    $("<td>").text(trainName),
     $("<td>").text(trainDestination),
     $("<td>").text(trainFrequency),
     $("<td>").text(nextTrain),

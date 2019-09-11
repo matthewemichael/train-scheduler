@@ -1,11 +1,22 @@
+body {
+    background: #292463;
+}
+
 #train-table th,
 td {
     text-align: center;
 }
 
-.jumbotron {
-    background-color: #d2d2d2; 
-    color: white
+.card {
+    border: 3px solid silver;
+}
+
+.jumbotron {  
+    background: url(../images/memberwhenbg.jpg);
+    background-size: cover; 
+    background-position: center;
+    min-height: 450px;
+    border: 3px solid silver;
 }
 
 h1 {
@@ -20,11 +31,7 @@ thead {
 
 .error {
     color: red;
-    margin-left: 5px;
-}
-
-.hidden {
-    visibility: hidden;
+    margin-left: 3vw;
 }
 
 img:hover { 
@@ -46,4 +53,17 @@ img.removeButton {
 .modal-body
 {
     margin: 0 auto;  
+}
+
+.btn-primary {
+    background: #f6db50 !important;
+    color: #666666;
+    
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+    background: #f5b21b !important;
+    
 }
