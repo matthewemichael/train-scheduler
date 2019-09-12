@@ -43,8 +43,13 @@ $("#add-train-btn").on("click", function(event) {
     if (trainName == "" ||
     trainDestination == "" ||
     trainStart == "Invalid date" ||
-    trainFrequency == "") {
-      $('button').after('<span class="error">You Must Complete The Entire Form</span>')
+    trainFrequency == "" ||
+    trainFrequency == "0" ||
+    trainFrequency == "00" ||
+    trainFrequency == "000" ||
+    trainFrequency == "0000" ||
+    trainFrequency == "00000") {
+      $('button#add-train-btn').after('<span class="error">You Must Complete The Entire Form</span>')
     }
     else {
     // Creates local "temporary" object for holding train data
