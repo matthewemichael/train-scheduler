@@ -25,8 +25,11 @@ In this assignment the objective was to create a train schedule application that
     * All form fields must be completed in order to submit
 * User Can Delete Trains
 
-## Technologies Used
+### Technologies Used
 - [jQuery](https://api.jquery.com/)
 - [Firebase](https://firebase.google.com/)
 - [Moment.js](https://momentjs.com/)
 - [Bootstrap](https://getbootstrap.com/docs/4.0/getting-started/introduction/)
+
+### Screen Shot
+![screenshot](assets/images/train-screenshot.png)
