@@ -19,11 +19,10 @@ In this assignment the objective was to create a train schedule application that
 
 ### Added Functionality
 
-* Form Validation
-  * Correct time input
-  * Frequency field accepts only numeric values
-  * All form fields must be completed in order to submit
-
+* Form Validation:
+    * Correct time input
+    * Frequency field accepts only numeric values 
+    * All form fields must be completed in order to submit
 * User Can Delete Trains
 
 ## Technologies Used
